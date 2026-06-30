@@ -486,16 +486,7 @@ result.disqualified
 
     </div>
 
-    <div class="summary-card">
 
-
-    <div>🎯 Accuracy</div>
-
-    <h2>
-        ${result.accuracy}%
-    </h2>
-
-</div>
 
     </div>
 
@@ -943,12 +934,22 @@ currentQuestion.answerNumber
 
     <h3>📖 Explanation</h3>
 
-    <div class="explanation-text">
+   <div class="explanation-text">
 
 <p>
 ${
 (currentQuestion.explanation || "Explanation Not Available")
-.replace(/\n/g,"</p><p>")
+
+
+.replace(/\*\*_(.*?)_\*\*/g, "<strong><u>$1</u></strong>")
+    
+    .replace(/_\*\*(.*?)\*\*_/g, "<strong><u>$1</u></strong>")
+    
+    .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
+    
+    .replace(/_(.*?)_/g, "<u>$1</u>")
+    
+    .replace(/\n/g, "</p><p>")
 }
 </p>
 
@@ -1032,6 +1033,8 @@ if (exitBtn) {
 
             if (index > 0) {
                 showReviewScreen(index - 1);
+            window.scrollTo(0, 0);
+                
             }
 
         };
@@ -1043,6 +1046,7 @@ if (nextBtn) {
         
         if (index < filteredQuestions.length - 1) {
             showReviewScreen(index + 1);
+            window.scrollTo(0, 0);
         }
         
     };
