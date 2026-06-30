@@ -1,11 +1,53 @@
 let questions = [];
+
 let currentQuestion = 0;
 let examStartTime = 0;
+let currentCsvUrl = CONFIG.CSV_URL;
+const urlParams = new URLSearchParams(window.location.search);
+
+const testCode = urlParams.get("test");
 async function loadQuestions() {
     try {
+        if (testCode) {
+    
+    const configResponse =
+        await fetch(CONFIG.MASTER_CONFIG_URL);
+    
+    const configCsv =
+        await configResponse.text();
+    
+    const configRows =
+        Papa.parse(configCsv, {
+            header: false,
+            skipEmptyLines: true
+        }).data;
+    
+    const match =
+        configRows
+        .slice(1)
+        .find(row =>
+            row[0].trim() === testCode &&
+    row[3].trim().toUpperCase() === "YES"
+        );
+    
+    if (match) {
+        
+        currentCsvUrl = match[1];
+        console.log("Loaded Test:", testCode);
+console.log("CSV URL:", currentCsvUrl);
+        
+    } else {
+        
+        alert("Test Not Found");
+        
+        return;
+        
+    }
+    
+}
         showLoading();
 
-        const response = await fetch(CONFIG.CSV_URL);
+        const response = await fetch(currentCsvUrl);
         const csvText = await response.text();
 
 const parsed = Papa.parse(
