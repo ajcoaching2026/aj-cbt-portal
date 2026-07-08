@@ -2103,3 +2103,12 @@ margin-top:-2px;
   
 }
 /* test123 */
+.question-content {
+  
+  display: flex;
+  
+  flex-direction: column;
+  
+  gap: 2px;
+  
+}
