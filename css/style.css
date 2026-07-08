@@ -939,29 +939,34 @@ gap: 4px;
 }
 .question-text {
   
-  font-size: 20px;
+  font-size: 19px;
   
-  font-weight: 700;
+  font-weight: 600;
   
-  line-height: 1.60;
+  line-height: 1.35;
   
   color: #111827;
   
-  text-align: left;
+  text-align: justify;
   
-  white-space: normal;
+  text-align-last: left;
+  
+white-space: pre-line;
   
   word-break: normal;
   
   overflow-wrap: break-word;
   
-  word-spacing: -0.5px;
+  word-spacing: 0;
   
   letter-spacing: 0;
   
   hyphens: none;
   
+  margin: 0;
+  
 }
+
 .question-divider {
   
   border: none;
@@ -999,9 +1004,11 @@ gap: 4px;
 
 font-weight:500;
 
-line-height:1.45;
+line-height:1.38;
 
-text-align:left;
+text-align:justify;
+
+text-align-last:left;
 
 white-space:normal;
 
@@ -1009,12 +1016,11 @@ word-break:normal;
 
 overflow-wrap:break-word;
 
-word-spacing:-0.3px;
+word-spacing:0;
 
 letter-spacing:0;
 
 hyphens:none;
-  
 }
 .disqualified-box {
   
