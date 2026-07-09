@@ -453,7 +453,7 @@ function showSubmitModal(
 
 <div class="submit-row">
 
-<span>⏱ Time Left</span>
+<span class="submit-icon">🕒</span> Time Left
 
 <span id="submitTime">
 ${document.getElementById("global-timer")?.innerText || ""}
@@ -463,7 +463,7 @@ ${document.getElementById("global-timer")?.innerText || ""}
 
 <div class="submit-row">
 
-<span>☑ Attempted</span>
+<span class="submit-icon">✓</span> Attempted
 
 <span>${answered}</span>
 
@@ -471,15 +471,14 @@ ${document.getElementById("global-timer")?.innerText || ""}
 
 <div class="submit-row">
 
-<span>◌ Unattempted</span>
-
+<span class="submit-icon">○</span> Unattempted
 <span>${unanswered}</span>
 
 </div>
 
 <div class="submit-row">
 
-<span>☆ Marked</span>
+<span class="submit-icon">☆</span> Marked
 
 <span>${reviewed}</span>
 
@@ -487,7 +486,7 @@ ${document.getElementById("global-timer")?.innerText || ""}
 
 <div class="submit-row">
 
-<span>🟠 No option selected</span>
+<span class="submit-icon orange-dot"></span> No option selected
 
 <span>${unanswered}</span>
 

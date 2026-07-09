@@ -135,7 +135,7 @@ document.getElementById(
 
     `;
 }
-function showExam(question-badge">, index, total) {
+function showExam(question, index, total) {
     hideAllScreens();
 
 document.getElementById(
@@ -217,88 +217,81 @@ document.getElementById(
 
 <div class="options-box">
 
-            <button
-    class="option-btn
-    ${selectedAnswer=="1"
-    ? "selected"
-    : ""}"
-    data-option="1">
+    <button
+        class="option-btn ${selectedAnswer=="1" ? "selected" : ""}"
+        data-option="1">
 
-    <span class="option-label">
+        <span class="option-label">
+            A.
+        </span>
 
-        A.
+        <span class="option-text">
+            ${question.option1}
+        </span>
 
-    </span>
+    </button>
 
-    <span class="option-text">
+    <button
+        class="option-btn ${selectedAnswer=="2" ? "selected" : ""}"
+        data-option="2">
 
-        ${question.option1}
+        <span class="option-label">
+            B.
+        </span>
 
-    </span>
+        <span class="option-text">
+            ${question.option2}
+        </span>
 
-</button>
+    </button>
 
-            <span class="option-label">
+    <button
+        class="option-btn ${selectedAnswer=="3" ? "selected" : ""}"
+        data-option="3">
 
-    B.
+        <span class="option-label">
+            C.
+        </span>
 
-</span>
+        <span class="option-text">
+            ${question.option3}
+        </span>
 
-<span class="option-text">
+    </button>
 
-    ${question.option2}
+    <button
+        class="option-btn ${selectedAnswer=="4" ? "selected" : ""}"
+        data-option="4">
 
-</span>
+        <span class="option-label">
+            D.
+        </span>
 
-            <span class="option-label">
+        <span class="option-text">
+            ${question.option4}
+        </span>
 
-    C.
+    </button>
 
-</span>
+    ${question.option5Text ? `
 
-<span class="option-text">
+    <button
+        class="option-btn ${selectedAnswer=="5" ? "selected" : ""}"
+        data-option="5">
 
-    ${question.option3}
+        <span class="option-label">
+            E.
+        </span>
 
-</span>
+        <span class="option-text">
+            ${question.option5Text}
+        </span>
 
-            <span class="option-label">
+    </button>
 
-    D.
+    ` : ""}
 
-</span>
-
-<span class="option-text">
-
-    ${question.option4}
-
-</span>
-            ${question.option5Text
-? `
-<button
-    class="option-btn
-    ${selectedAnswer=="5"
-    ? "selected"
-    : ""}"
-    data-option="5">
-
-    <span class="option-label">
-
-        E.
-
-    </span>
-
-    <span class="option-text">
-
-        ${question.option5Text}
-
-    </span>
-
-</button>
-`
-: ""}
-
-        </div>
+</div>
 
 <div class="bottom-actions">
 
