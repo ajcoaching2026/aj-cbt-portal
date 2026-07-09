@@ -203,7 +203,7 @@ document.getElementById(
     <div class="question-content">
 
         <div class="question-badge">
-            Q. ${index + 1} • v01
+            Q. ${index + 1}
         </div>
 
         <div class="question-text">
