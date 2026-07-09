@@ -610,12 +610,11 @@ color:white;
 
 .exam-header {
   
-  display:block;
-
+  display: block;
   
-  padding:8px 14px;
+  padding: 4px 14px 6px;
   
-  margin-bottom: 8px;
+  margin-bottom: 6px;
   
   background: #fff;
   
@@ -1901,12 +1900,11 @@ text-justify: inter-word;
   
   justify-content: center;
   
-margin-top:-2px;
+  margin-top: -6px;
   
-  margin-bottom: 6px;
+  margin-bottom: 2px;
   
 }
-
 .header-info-row {
   
   display: flex;
@@ -1914,7 +1912,9 @@ margin-top:-2px;
   justify-content: space-between;
   
   align-items: center;
-  margin-top:-6px;
+  
+  margin-top: -10px;
+  
 }
 
 /* ---------- Submit Popup ---------- */
