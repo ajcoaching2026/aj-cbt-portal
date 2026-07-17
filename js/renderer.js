@@ -135,6 +135,89 @@ document.getElementById(
 
     `;
 }
+function renderQuestionText(text) {
+    
+    return formatText(text || "");
+    
+}
+
+
+function renderOptionText(text) {
+    
+    return formatText(text || "");
+    
+}
+
+
+function renderOptions(question, mode = "exam") {
+    
+    const options = [
+        question.option1,
+        question.option2,
+        question.option3,
+        question.option4
+    ];
+    
+    // Future Support (Option E)
+    if (question.option5Text) {
+        options.push(question.option5Text);
+    }
+    
+    return options.map((text, i) => {
+        
+        const optionNo = String(i + 1);
+        const optionLabel = String.fromCharCode(65 + i);
+        
+        let stateClass = "";
+        
+        if (mode === "exam") {
+            
+            if (question.userAnswer === optionNo) {
+                stateClass = "selected";
+            }
+            
+        } else if (mode === "review") {
+    
+    // Always highlight the correct answer
+    if (question.answerNumber === optionNo) {
+        stateClass = "correct";
+    }
+    
+    // Mark wrong only for A-D.
+    // Option E (Unattempted Question) should never become red.
+    else if (
+        question.userAnswer === optionNo &&
+        optionNo !== "5"
+    ) {
+        stateClass = "wrong";
+    }
+    
+}
+        
+        return `
+
+<button
+    class="option-btn ${stateClass}"
+    ${mode === "exam"
+        ? `data-option="${optionNo}"`
+        : ""}>
+
+    <span class="option-label">
+        ${optionLabel}.
+    </span>
+
+    <span class="option-text">
+    ${renderOptionText(text)}
+</span>
+
+</button>
+
+`;
+        
+    }).join("");
+}
+    
+
 function showExam(question, index, total) {
     hideAllScreens();
 
@@ -142,8 +225,7 @@ document.getElementById(
     "exam-screen"
 ).style.display = "block";
 
-    const selectedAnswer =
-        question.userAnswer || "";
+
         
         
     document.getElementById(
@@ -203,11 +285,11 @@ document.getElementById(
     <div class="question-content">
 
         <div class="question-badge">
-    Q. ${index + 1}${index === 0 ? " • AJ01" : ""}
+    Q. ${index + 1}${index === 0 ? " • AJ02" : ""}
 </div>
 
         <div class="question-text">
-            ${question.question}
+            ${renderQuestionText(question.question)}
         </div>
 
     </div>
@@ -217,81 +299,11 @@ document.getElementById(
 
 <div class="options-box">
 
-    <button
-        class="option-btn ${selectedAnswer=="1" ? "selected" : ""}"
-        data-option="1">
-
-        <span class="option-label">
-            A.
-        </span>
-
-        <span class="option-text">
-            ${question.option1}
-        </span>
-
-    </button>
-
-    <button
-        class="option-btn ${selectedAnswer=="2" ? "selected" : ""}"
-        data-option="2">
-
-        <span class="option-label">
-            B.
-        </span>
-
-        <span class="option-text">
-            ${question.option2}
-        </span>
-
-    </button>
-
-    <button
-        class="option-btn ${selectedAnswer=="3" ? "selected" : ""}"
-        data-option="3">
-
-        <span class="option-label">
-            C.
-        </span>
-
-        <span class="option-text">
-            ${question.option3}
-        </span>
-
-    </button>
-
-    <button
-        class="option-btn ${selectedAnswer=="4" ? "selected" : ""}"
-        data-option="4">
-
-        <span class="option-label">
-            D.
-        </span>
-
-        <span class="option-text">
-            ${question.option4}
-        </span>
-
-    </button>
-
-    ${question.option5Text ? `
-
-    <button
-        class="option-btn ${selectedAnswer=="5" ? "selected" : ""}"
-        data-option="5">
-
-        <span class="option-label">
-            E.
-        </span>
-
-        <span class="option-text">
-            ${question.option5Text}
-        </span>
-
-    </button>
-
-    ` : ""}
+    ${renderOptions(question, "exam")}
 
 </div>
+
+
 
 <div class="bottom-actions">
 
@@ -378,178 +390,279 @@ document.getElementById(
 
     <div class="exam-container">
 
+        <div class="result-header">
+<div class="result-header">
+
+    <div class="result-page-title">
+
+        Test Result
+
+    </div>
+
+    <div class="result-brand">
+
         <img
-src="assets/logo.png"
-class="logo">
+        src="assets/logo.png"
+        class="result-logo">
 
-<h2 class="result-academy">
+        <div class="result-brand-text">
 
-AJ हिंGLISH Academy
+            <div class="result-academy">
 
-</h2>
+                AJ हिंGLISH Academy
 
-<div class="result-divider"></div>
+            </div>
 
-<h1 class="result-title">
+            <div class="result-tagline">
 
-TEST RESULT
+                <span class="tag-orange">ज्ञान</span>
 
-</h1>
-        ${
+                <span class="tag-dot">•</span>
+
+                <span class="tag-blue">Growth</span>
+
+                <span class="tag-dot">•</span>
+
+                <span class="tag-orange">Success</span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</div>
+            ${
 result.disqualified
 ?
 `
 <div class="disqualified-box">
 
-    <h3>
-        ⚠️ अयोग्यता सूचना
-    </h3>
+    <div class="disq-left">
 
-    <div class="disq-line">
+        <div class="disq-title">
 
-    ❌ <strong>छोड़े गए प्रश्न :</strong>
-    ${result.blankCount}
+            ⚠️ अयोग्यता सूचना
 
-</div>
+        </div>
 
-<div class="disq-line">
+        <div class="disq-item">
 
-    ✅ <strong>अनुमत सीमा :</strong>
-    ${Math.floor(result.total * 0.10)} प्रश्न
+            ❌ <strong>छोड़े गए प्रश्न :</strong>
 
-</div>
+            ${result.blankCount}
 
-<div class="disq-rule">
+        </div>
 
-    <strong>RPSC नियम:</strong><br>
+        <div class="disq-item">
 
-    10% से अधिक प्रश्नों में किसी भी विकल्प को अंकित नहीं करने पर अभ्यर्थी अयोग्य माना जाएगा।
+            ✅ <strong>अनुमत सीमा :</strong>
 
-</div>
-  
+            ${Math.floor(result.total * 0.10)} प्रश्न
+
+        </div>
+
+    </div>
+
+    <div class="disq-divider"></div>
+
+    <div class="disq-right">
+
+        <div class="disq-rule-title">
+
+            RPSC नियम:
+
+        </div>
+
+        <div class="disq-rule-text">
+
+            10% से अधिक प्रश्नों में किसी भी विकल्प को अंकित नहीं करने पर अभ्यर्थी अयोग्य माना जाएगा।
+
+        </div>
+
+    </div>
+
 </div>
 `
 :
 ""
 }
-        
-        <div class="result-stats">
+
+<div class="score-banner">
+
+    <div class="score-left">
+
+        <div class="score-trophy">
+            <img src="assets/trophy.png" alt="Trophy">
+        </div>
+
+        <div class="score-content">
+
+            <div class="score-label">
+                Your Score
+            </div>
+
+            <div class="score-main">
+
+                <span class="score-value">${result.score}</span>
+
+                <span class="score-total">/ ${result.maximumMarks}</span>
+
+            </div>
+
+            <div class="score-badge">
+                ${result.percentage}%
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="result-stats">
 
     <div class="result-card correct-card">
 
-        <div>✅ Correct Answers</div>
+        <div class="result-card-icon">✓</div>
 
-        <h2>${result.correct}</h2>
+        <div class="result-card-title">
+            Correct
+        </div>
 
-        <small>
-    +${result.correctMarks} Marks
-</small>
+        <h2 class="correct-number">${result.correct}</h2>
+
+        <div class="result-card-subtitle">
+            Questions
+        </div>
+
+        <div class="marks-chip positive-chip">
+            +${result.correctMarks} Marks
+        </div>
 
     </div>
 
     <div class="result-card wrong-card">
 
-        <div>❌ Incorrect Answers</div>
+        <div class="result-card-icon">✕</div>
 
-        <h2>${result.wrong}</h2>
+        <div class="result-card-title">
+            Incorrect
+        </div>
 
-        <small>
-    -${result.negativeMarks} Marks
-</small>
+        <h2 class="wrong-number">${result.wrong}</h2>
+
+        <div class="result-card-subtitle">
+            Questions
+        </div>
+
+        <div class="marks-chip negative-chip">
+            -${result.negativeMarks} Marks
+        </div>
 
     </div>
 
     <div class="result-card unattempted-card">
 
-        <div>⚪ Left Blank</div>
+        <div class="result-card-icon">○</div>
 
-        <h2>${result.blankCount}</h2>
+        <div class="result-card-title">
+            Not Attempted
+        </div>
 
-        <small>
-            No Marks
-        </small>
+        <h2 class="blank-number">${result.blankCount}</h2>
 
-    </div>
-    <div class="result-card optione-card">
+        <div class="result-card-subtitle">
+            Questions
+        </div>
 
-    <div>🟡 Option E</div>
+        <div class="marks-chip neutral-chip">
+            0 Marks
+        </div>
 
-    <h2>${result.optionECount}</h2>
-
-    <small>(No Marks)</small>
-
-</div>
-
-</div>
-
-<div class="summary-card maximum-card">
-
-    <div>🏆 Your Marks</div>
-
-    <h2>
-        ${result.score}
-    </h2>
-
-    <small>
-        Maximum Marks : ${result.maximumMarks}
-    </small>
-
-</div>
-
-    <div class="summary-card percentage-card">
-
-        <div>📊 Percentage</div>
-
-        <h2>
-            ${result.percentage}%
-        </h2>
-
-    </div>
-
-
-
-    </div>
-
-<div class="result-info-bar">
-
-    <div>
-        ⏱ Time Taken :
-        <strong>
-            ${result.timeTaken}
-        </strong>
-    </div>
-
-    <div>
-        📘 Total Questions :
-        <strong>
-            ${result.total}
-        </strong>
-    </div>
-
-    <div>
-        📝 Attempted :
-        <strong>
-            ${result.attempted}
-        </strong>
     </div>
 
 </div>
 
+
+<div class="test-summary-card">
+
+    <div class="test-summary-title">
+
+        📋 Test Summary
+
+    </div>
+
+    <div class="test-summary-grid">
+
+      <div class="summary-item">
+
+    <div class="summary-icon">📋</div>
+
+    <div class="summary-label">
+        Total Questions
+    </div>
+
+    <div class="summary-value">
+        ${result.total}
+    </div>
+
+</div>
+
+<div class="summary-item">
+
+    <div class="summary-icon">✅</div>
+
+    <div class="summary-label">
+        Attempted
+    </div>
+
+    <div class="summary-value">
+        ${result.attempted}
+    </div>
+
+</div>
+
+<div class="summary-item">
+
+    <div class="summary-icon">🕒</div>
+
+    <div class="summary-label">
+        Time Taken
+    </div>
+
+    <div class="summary-value">
+        ${result.timeTaken}
+    </div>
+
+</div>    </div>
+
+</div>
         <div class="result-buttons">
 
-    <button id="reviewAnswersBtn">
-        Review Answers
+    <button
+        id="reviewAnswersBtn"
+        class="primary-btn">
+
+        📖 Review Answers
+
     </button>
 
-    <button id="restartTestBtn">
-        Restart Test
+    <button
+        id="restartTestBtn"
+        class="secondary-btn">
+
+        🔄 Restart Test
+
     </button>
 
     <button
         id="joinTelegramResult"
         class="telegram-btn">
 
-        🚀 For More Tests
+        📚 For More Testss
 
     </button>
 
@@ -832,59 +945,27 @@ Unattempted
 
 <div class="question-box">
 
-    <div class="question-id">
-        Q. ${currentQuestion.index + 1}
-    </div>
+    <div class="question-content">
 
-    <div class="question-text">
-        ${currentQuestion.question}
+        <div class="question-badge">
+            Q. ${currentQuestion.index + 1}
+        </div>
+
+        <div class="question-text">
+            ${renderQuestionText(currentQuestion.question)}
+        </div>
+
     </div>
 
 </div>
 
+<hr class="question-divider">
+
         <div class="options-box">
 
-            <button class="option-btn ${
-                currentQuestion.answerNumber == "1"
-                ? "correct"
-                : currentQuestion.userAnswer == "1"
-                ? "wrong"
-                : ""
-            }">
-                A. ${currentQuestion.option1}
-            </button>
+    ${renderOptions(currentQuestion, "review")}
 
-            <button class="option-btn ${
-                currentQuestion.answerNumber == "2"
-                ? "correct"
-                : currentQuestion.userAnswer == "2"
-                ? "wrong"
-                : ""
-            }">
-                B. ${currentQuestion.option2}
-            </button>
-
-            <button class="option-btn ${
-                currentQuestion.answerNumber == "3"
-                ? "correct"
-                : currentQuestion.userAnswer == "3"
-                ? "wrong"
-                : ""
-            }">
-                C. ${currentQuestion.option3}
-            </button>
-
-            <button class="option-btn ${
-                currentQuestion.answerNumber == "4"
-                ? "correct"
-                : currentQuestion.userAnswer == "4"
-                ? "wrong"
-                : ""
-            }">
-                D. ${currentQuestion.option4}
-            </button>
-
-        </div>
+</div>
 <div class="review-summary">
 
     <div class="review-answer-box">

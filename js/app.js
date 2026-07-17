@@ -62,11 +62,9 @@ const rows = parsed.data;
         const headers = rows[0];
     
         questions = rows.slice(1).map(row => ({
-            question: (row[1] || "")
-    .replace(
-        /_(.*?)_/g,
-        "<u>$1</u>"
-    ),
+            question: row[1] || "",
+            
+    
             option1: (row[2] || "")
     .replace(/_(.*?)_/g, "<u>$1</u>"),
     
@@ -130,7 +128,17 @@ questionSource: row[36] || "",
         alert("CSV Loading Failed");
     }
 }
-
+function renderQuestion() {
+    
+    showExam(
+        questions[currentQuestion],
+        currentQuestion,
+        questions.length
+    );
+    
+    bindQuestionEvents();
+    
+}
 function bindLandingEvents() {
 
     const tgBtn =
@@ -191,16 +199,7 @@ renderQuestion();
     }
 }
 
-function renderQuestion() {
 
-    showExam(
-        questions[currentQuestion],
-        currentQuestion,
-        questions.length
-    );
-
-    bindQuestionEvents();
-}
 
 document.addEventListener(
     "DOMContentLoaded",
